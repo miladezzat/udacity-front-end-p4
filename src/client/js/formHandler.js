@@ -1,48 +1,23 @@
-const error = document.getElementById('error');
-const polarity = document.getElementById('polarity');
-const polConfidence = document.getElementById('pol-confidence');
-const subjectivity = document.getElementById('subjectivity');
-const subConfidence = document.getElementById('sub-confidence');
 
-function handleSubmit(event) {
-    event.preventDefault()
 
-    // check what text was put into the form field
-    let formUrl = document.getElementById('url').value;
+const confidence = document.getElementById('confidence');
 
-    console.log("::: Form Submitted :::")
+const subject = document.getElementById('subject');
 
-    if (Client.validateUrl(formUrl)) {
-        // Hide error message
-        error.style.visibility = 'hidden';
+const subc = document.getElementById('subc');
 
-        // Clear previous form results
-        polarity.innerHTML = "";
-        polConfidence.innerHTML = "";
-        subjectivity.innerHTML = "";
-        subConfidence.innerHTML = "";
+const polrty = document.getElementById('polrty');
 
-        // Call postData passing in the entered url
-        postData(formUrl)
-            .then(function(data) {
-                // Update Webpage with results
-                updateUI(data);
-            })
-    }
-}
-// Async POST
 const postData = async(url = '') => {
-
-    const response = await fetch('http://localhost:3030/article', {
+    const response = await fetch('http://localhost:3000/article', {
         method: 'POST',
         credentials: 'same-origin',
         mode: 'cors',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ "url": url }), // body data type must match "Content-Type" header        
+        body: JSON.stringify({ "url": url }), 
     });
-
     try {
         const newData = await response.json();
         console.log(newData)
@@ -53,12 +28,28 @@ const postData = async(url = '') => {
 }
 
 
+function handleSubmit(event) {
+    event.preventDefault()
+    let formText = document.getElementById('name').value;
+    console.log("::: Form Submitted :::")
+    if (Client.checkForName(formText)) {
+        postData(formText)
+            .then(function(data) {
+                updateUI(data);
+            }) }}
+
+
+
 function updateUI(data) {
     console.log(data)
-    polarity.innerHTML = `Polarity: ${data.polarity}`;
-    polConfidence.innerHTML = `Polarity Confidence: ${data.polarity_confidence}`;
-    subjectivity.innerHTML = `Subjectivity: ${data.subjectivity}`;
-    subConfidence.innerHTML = `Subjectivity Confidence: ${data.subjectivity_confidence}`;
+    subc.innerHTML = `${data.subjectivity_confidence}`;
+
+    polrty.innerHTML = `${data.polarity}`;
+
+    confidence.innerHTML = `${data.polarity_confidence}`;
+
+    subject.innerHTML = `${data.subjectivity}`;
+
 }
 
 export { handleSubmit }
