@@ -17,15 +17,15 @@ app.use(bodyParser.urlencoded({
 }));
 
 
-app.use(express.static(path.join(__dirname,'dist')));
+app.use(express.static(path.join(__dirname,'../../dist')));
 
 app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname,'dist/index.html'));
+    res.sendFile(path.join(__dirname,'../../dist/index.html'));
 })
 
 // designates what port the app will listen to for incoming requests
 const port = process.env.PORT || 3000
-app.listen(5000, function () {
+app.listen(port, function () {
     console.log('Example app listening on port: '+port)
 })
 
